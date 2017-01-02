@@ -1,0 +1,6 @@
+version: '2'
+services:
+  mongo:
+    build: .
+    ports:
+      - "27017:27017"

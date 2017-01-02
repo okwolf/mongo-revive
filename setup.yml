@@ -1,0 +1,7 @@
+version: '2'
+services:
+  mongo:
+    extends:
+      file: docker-compose.yml
+      service: mongo
+    command: "--smallfiles"

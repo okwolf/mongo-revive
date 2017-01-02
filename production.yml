@@ -1,0 +1,8 @@
+version: '2'
+services:
+  mongo:
+    extends:
+      file: docker-compose.yml
+      service: mongo
+    restart: always
+    command: "--smallfiles --setParameter failIndexKeyTooLong=false --auth --sslMode preferSSL --sslPEMKeyFile /etc/ssl/mongodb.pem"
