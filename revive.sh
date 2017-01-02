@@ -11,11 +11,11 @@ waitForMongo() {
   done
 }
 
-[ -n "$ROOT_PASSWORD" ] || read -p "Enter root password: " ROOT_PASSWORD
-[ -n "$APP_DB" ] || read -p "Enter app database: " APP_DB
-[ -n "$APP_USER" ] || read -p "Enter app user name: " APP_USER
-[ -n "$APP_PASSWORD" ] || read -p "Enter app user password: " APP_PASSWORD
-[ -n "$BACKUP_URL" ] || read -p "Enter URL of backup/dump archive to restore: " BACKUP_URL
+[[ $ROOT_PASSWORD ]] || read -p "Enter root password: " ROOT_PASSWORD
+[[ $APP_DB ]] || read -p "Enter app database: " APP_DB
+[[ $APP_USER ]] || read -p "Enter app user name: " APP_USER
+[[ $APP_PASSWORD ]] || read -p "Enter app user password: " APP_PASSWORD
+[[ $BACKUP_URL ]] || read -p "Enter URL of backup/dump archive to restore (blank for none): " BACKUP_URL
 
 # Cleanup any existing containers
 docker-compose down
@@ -49,10 +49,12 @@ EOF
 # Auth will be enabled now
 docker-compose stop
 ./run.sh
-waitForMongo
 
-# Download backup archive into /data folder on container
-docker-compose exec mongo wget -P /data $BACKUP_URL
-# Restore data as our application user from the archive
-# Also verifies that application user is able to connect in the processs
-docker-compose exec mongo sh -c 'mongorestore --gzip --archive=$(ls /data/*.archive) --drop '"--db=$APP_DB -u=$APP_USER -p=$APP_PASSWORD"
+if [[ $BACKUP_URL ]] ; then
+  waitForMongo
+  # Download backup archive into /data folder on container
+  docker-compose exec mongo wget -P /data $BACKUP_URL
+  # Restore data as our application user from the archive
+  # Also verifies that application user is able to connect in the processs
+  docker-compose exec mongo sh -c 'mongorestore --gzip --archive=$(ls /data/*.archive) --drop '"--db=$APP_DB -u=$APP_USER -p=$APP_PASSWORD"
+fi
