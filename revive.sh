@@ -1,14 +1,21 @@
 waitForMongo() {
+  mongoStarted=false
   for i in `seq 1 30`
   do
     # Simpliest Mongo command I could find for testing if available
     if docker-compose exec mongo mongo --eval 'db.runCommand( { ping: 1 } )' &> /dev/null ; then
+      mongoStarted=true
       break
     else
       echo -n '.'
       sleep 1
     fi
   done
+  if [ "$mongoStarted" = false ]; then
+    echo
+    echo "$(tput setaf 1)Mongo couldn't start!$(tput sgr0)"
+    exit 1
+  fi
 }
 
 [[ $ROOT_PASSWORD ]] || read -p "Enter root password: " ROOT_PASSWORD
@@ -17,8 +24,11 @@ waitForMongo() {
 [[ $APP_PASSWORD ]] || read -p "Enter app user password: " APP_PASSWORD
 [[ $BACKUP_URL ]] || read -p "Enter URL of backup/dump archive to restore (blank for none): " BACKUP_URL
 
-# Cleanup any existing containers
-docker-compose down
+if docker-compose exec mongo mongo --eval 'db.runCommand( { ping: 1 } )' &> /dev/null ; then
+  # Cleanup any existing containers
+  docker-compose down
+fi
+
 # Build the latest
 docker-compose build
 # Start Mongo in setup configuration, no auth
