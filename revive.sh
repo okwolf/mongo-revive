@@ -17,11 +17,8 @@ waitForMongo() {
 [[ $APP_PASSWORD ]] || read -p "Enter app user password: " APP_PASSWORD
 [[ $BACKUP_URL ]] || read -p "Enter URL of backup/dump archive to restore (blank for none): " BACKUP_URL
 
-# If previous data exists, cleanup before proceeding
-if [ -d data ]; then
-  ./clean.sh
-fi
-
+# Cleanup any existing containers
+docker-compose down
 # Build the latest
 docker-compose build
 # Start Mongo in setup configuration, no auth
