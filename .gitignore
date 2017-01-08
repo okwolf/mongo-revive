@@ -1,0 +1,3 @@
+# Data is kept outside of container
+# But should never be committed
+data

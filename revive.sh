@@ -2,7 +2,7 @@ waitForMongo() {
   for i in `seq 1 30`
   do
     # Simpliest Mongo command I could find for testing if available
-    if docker-compose exec mongo mongo --eval 'db.runCommand( { ping: 1 } )' > /dev/null ; then
+    if docker-compose exec mongo mongo --eval 'db.runCommand( { ping: 1 } )' &> /dev/null ; then
       break
     else
       echo -n '.'
@@ -17,8 +17,11 @@ waitForMongo() {
 [[ $APP_PASSWORD ]] || read -p "Enter app user password: " APP_PASSWORD
 [[ $BACKUP_URL ]] || read -p "Enter URL of backup/dump archive to restore (blank for none): " BACKUP_URL
 
-# Cleanup any existing containers
-docker-compose down
+# If previous data exists, cleanup before proceeding
+if [ -d data ]; then
+  ./clean.sh
+fi
+
 # Build the latest
 docker-compose build
 # Start Mongo in setup configuration, no auth
