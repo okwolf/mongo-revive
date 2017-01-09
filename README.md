@@ -1,4 +1,10 @@
-This will aid in spinning up a new MongoDB instance using Docker Compose, setting up root and app users, and optionally restoring data to the app user database. This instance will have TLS enabled, although it will use a self-signed cert generated as part of building the image. The usage of version 3.2.6 and MongoDB options chosen are inspired by parse-server's recommendations. The primary usage of this project is first to clone this repo:
+# Mongo Revive
+This will aid in spinning up a new MongoDB instance using Docker Compose, setting up root and app users, and optionally restoring data to the app user database. This instance will have TLS enabled, although it will use a self-signed cert generated as part of building the image. The usage of version 3.2.6 and MongoDB options chosen are inspired by parse-server's recommendations.
+## Prerequisites
+Begin by installing [Docker](https://www.docker.com) or if you already have Docker but not Docker Compose (AKA CoreOS) see [this Gist](https://gist.github.com/marszall87/ee7c5ea6f6da9f8968dd).
+
+## Usage
+The primary usage of this project is first to clone this repo:
 ```
 git clone https://github.com/okwolf/mongo-revive.git
 ```
