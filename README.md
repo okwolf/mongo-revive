@@ -15,6 +15,7 @@ Enter app user password: @S3cur3AppPa55w0rd
 Enter URL of backup/dump archive to restore (blank for none): https://blob.storage/some.database.archive
 ```
 For reference here is a table of all available variables:
+
 | Variable              | Required|Meaning|
 | ----------------------|:-------:|-------|
 | ROOT_PASSWORD         | YES     | The root account will have super cow powers and the username of root, but it needs a secure password from you! |
