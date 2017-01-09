@@ -24,8 +24,8 @@ For reference here is a table of all available variables:
 
 | Variable              | Required|Meaning|
 | ----------------------|:-------:|-------|
-| ROOT_PASSWORD         | YES     | The root account will have super cow powers and the username of root, but it needs a secure password from you! |
-| APP_DB                | YES     | This database will exist with the below user and password as the owner. If you use a backup, make sure it's for the same db. |
-| APP_USER              | YES     | This user should be used for connecting your app to the db for its data. This user will have full ownership over this data, but no additional permissions. |
-| APP_PASSWORD          | YES     | Password for the application user above. |
-| BACKUP_URL            | NO      | URL to download archive from and restore to app db using app user and password set previously. To create an archive to use with this command, use the following type of command: `mongodump --gzip --archive=$(date +%F_%H-%M-%S).archive --host=database.url --ssl --db=dev --username=app --password=@S3cur3AppPa55w0rd` |
+| MONGO_ROOT_PASSWORD         | YES     | The root account will have super cow powers and the username of root, but it needs a secure password from you! |
+| MONGO_APP_DB                | YES     | This database will exist with the below user and password as the owner. If you use a backup, make sure it's for the same db. |
+| MONGO_APP_USER              | YES     | This user should be used for connecting your app to the db for its data. This user will have full ownership over this data, but no additional permissions. |
+| MONGO_APP_PASSWORD          | YES     | Password for the application user above. |
+| MONGO_BACKUP_URL            | NO      | URL to download archive from and restore to app db using app user and password set previously. To create an archive to use with this command, use the following type of command: `mongodump --gzip --archive=$(date +%F_%H-%M-%S).archive --host=database.url --ssl --db=dev --username=app --password=@S3cur3AppPa55w0rd` |
