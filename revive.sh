@@ -22,7 +22,7 @@ waitForMongo() {
 [[ $MONGO_APP_DB ]] || read -p "Enter app database: " MONGO_APP_DB
 [[ $MONGO_APP_USER ]] || read -p "Enter app user name: " MONGO_APP_USER
 [[ $MONGO_APP_PASSWORD ]] || read -p "Enter app user password: " MONGO_APP_PASSWORD
-[[ $MONGO_BACKUP_URL ]] || read -p "Enter URL of backup/dump archive to restore (blank for none): " MONGO_BACKUP_URL
+[[ $MONGO_ARCHIVE_URL ]] || read -p "Enter URL of backup/dump archive to restore (blank for none): " MONGO_ARCHIVE_URL
 
 if docker-compose exec mongo mongo --eval 'db.runCommand( { ping: 1 } )' &> /dev/null ; then
   # Cleanup any existing containers
@@ -60,10 +60,10 @@ EOF
 docker-compose stop
 ./run.sh
 
-if [[ $MONGO_BACKUP_URL ]] ; then
+if [[ $MONGO_ARCHIVE_URL ]] && [[ $MONGO_ARCHIVE_URL != none ]] ; then
   waitForMongo
   # Download backup archive into /data folder on container
-  docker-compose exec mongo wget -P /data $MONGO_BACKUP_URL
+  docker-compose exec mongo wget -P /data $MONGO_ARCHIVE_URL
   # Restore data as our application user from the archive
   # Also verifies that application user is able to connect in the processs
   docker-compose exec mongo sh -c 'mongorestore --gzip --archive=$(ls /data/*.archive) --drop '"--db=$MONGO_APP_DB --username=$MONGO_APP_USER --password=$MONGO_APP_PASSWORD"
