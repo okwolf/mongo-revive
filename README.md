@@ -17,7 +17,7 @@ You'll be prompted for required values not already set in your environment:
 Enter root password: @PasswordMoreS3cure3ThanThi5
 Enter app database: dev
 Enter app user name: app
-Enter app user password: @S3cur3AppPa55w0rd
+Enter app user password: S3cur3AppPa55w0rd
 Enter URL of backup/dump archive to restore (blank for none): https://blob.storage/some.database.archive
 ```
 For reference here is a table of all available variables:
@@ -28,4 +28,9 @@ For reference here is a table of all available variables:
 | MONGO_APP_DB          | YES     | This database will exist with the below user and password as the owner. If you use a backup, make sure it's for the same db. |
 | MONGO_APP_USER        | YES     | This user should be used for connecting your app to the db for its data. This user will have full ownership over this data, but no additional permissions. |
 | MONGO_APP_PASSWORD    | YES     | Password for the application user above. |
-| MONGO_ARCHIVE_URL     | NO      | URL to download archive from and restore to app db using app user and password set previously. To create an archive to use with this command, use the following type of command: `mongodump --gzip --archive=$(date +%F_%H-%M-%S).archive --host=database.url --ssl --db=dev --username=app --password=@S3cur3AppPa55w0rd`. A special reserved value of `none` may be used for automatically bypassing this feature when automating running of Mongo Revive. |
+| MONGO_ARCHIVE_URL     | NO      | URL to download archive from and restore to app db using app user and password set previously. To create an archive to use with this command, use the following type of command: `mongodump --gzip --archive=$(date +%F_%H-%M-%S).archive --host=database.url --ssl --db=dev --username=app --password=S3cur3AppPa55w0rd`. A special reserved value of `none` may be used for automatically bypassing this feature when automating running of Mongo Revive. |
+
+Once this completes your MongoDB instance will be up and running (with your archived data if given). Authentication will be enabled with your secure passwords so it is now safe to open access to port 27017 from the outside world (firewall). You may now test connecting to your new MongoDB instance using a connection string like this:
+```
+mongodb://app:S3cur3AppPa55w0rd@database.url:27017/dev?ssl=true
+```
